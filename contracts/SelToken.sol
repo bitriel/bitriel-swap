@@ -36,11 +36,13 @@ contract Owner {
 	}
 }
 
-contract SELToken is ERC20I, SafeMath{
+contract SELToken is ERC20I{
+	using SafeMath for uint256;
+
 	string public symbols;
 	string public name;
 	uint8 public decimals;
-	uint public _totalSupply;
+	uint public totalSupply_;
     /* define an associative array whose keys are of type "address" to denote account number 
 	 and whose value are used to store token balances	*/
 	mapping(address => uint) balances;
@@ -51,35 +53,53 @@ contract SELToken is ERC20I, SafeMath{
 	*/
 	mapping(address => mapping(address => uint)) allowed;
 
-	constructor() public {
+	constructor(uint256 total) public {
 		symbols = "SEL";
 		name = "SELToken";
 		decimals = 18;
-		_totalSupply = 100000000;
-	}
+		totalSupply_ = total;
+		balances[msg.sender] = totalSupply_;
+		emit Transfer(address(0), msg.sender, totalSupply_);
 
+	}
 	function totalSupply() virtual public view override  returns (uint) {
-	// !implementation	
-			return 0;
+			return totalSupply_;
 	}
 	function balanceOf(address tokenOwner) virtual public view override  returns (uint balance) {
-    // !implementation
-			return 100;
-	}
+
+			return balances[tokenOwner];
+	}	
 	function allowance(address tokenOwner, address spender) virtual public view override returns (uint remaining) {
-    // !implementation
-			return 10;
+
+		return allowed[tokenOwner][spender];	
 	}
 	function transfer(address to, uint tokens) virtual public override returns (bool success) {
-    // !implementation
+			require(tokens <=balances[msg.sender], "Insuffient token to be sent");
+			balances[msg.sender] = balances[msg.sender].sub(tokens);
+			balances[to] = balances[to].add(tokens);
+			emit Transfer(msg.sender, to,  tokens);
 			return true;
 	}
-	function approve(address spender, uint tokens) virtual public override returns (bool success){
-    // !implementation
+	/* 
+	In short, delegated transaction, or "meta transaction" 
+	in blockchain is the type of transaction which performs 
+	an intended action on one account's behalf, while it is 
+	conducted (published) by another account (delegate), who actually pays fees for the transaction.
+
+	*/
+	function approve(address spender, uint tokens) virtual public override returns (bool success)
+	{
+			allowed[msg.sender][spender] = tokens;
+			emit Approval(msg.sender, spender, tokens);
 			return true;
 	}
 	function transferFrom(address from, address to, uint tokens) virtual public override returns (bool success){
-    // !implementation
+			require(tokens <=balances[from]);
+			require(tokens <= allowed[from][to]);
+			balances[from] = balances[from].sub(tokens);
+			allowed[from][msg.sender] = allowed[from][msg.sender].sub(tokens);
+			balances[to] = balances[to].add(tokens);
+			emit Transfer(from, to, tokens);
 			return true;
 	}
 }
