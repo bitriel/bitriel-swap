@@ -109,6 +109,7 @@ contract SELToken is ERC20I, Owner{
 	}
 	// Owner can transfer out any  ERC20 tokens
 	function transferTokenImplERC20(address tokenAddress, uint tokens) public onlyOnwer returns(bool success) {
+		// @return we cast address type to ERC20I interfae so that we can call transfer method
 		return ERC20I(tokenAddress).transfer(owner, tokens);
 	}
 }
