@@ -2,7 +2,6 @@
 // ----------------------------------------------------------------------------
 // "SELToken" token contract
 //
-// Deployed to : 
 // Symbol      : SEL
 // Name        : SELToken
 // Total supply: 100000000
@@ -12,12 +11,12 @@
 
 import "./SafeMath.sol";
 import "./ERC20I.sol";
-
+pragma solidity ^0.8.0;
 contract Owner {
 	address public owner;
 	address public  newOwner;	
 	event OwnershipTransferred(address indexed _from, address indexed _to);
-	constructor() public{
+	constructor() {
 			owner = msg.sender;
 	}
 
@@ -53,14 +52,13 @@ contract SELToken is ERC20I{
 	*/
 	mapping(address => mapping(address => uint)) allowed;
 
-	constructor(uint256 total) public {
+	constructor(uint total)  {
 		symbols = "SEL";
 		name = "SELToken";
 		decimals = 18;
-		totalSupply_ = total;
+		totalSupply_ = total * (10 ** decimals);
 		balances[msg.sender] = totalSupply_;
 		emit Transfer(address(0), msg.sender, totalSupply_);
-
 	}
 	function totalSupply() virtual public view override  returns (uint) {
 			return totalSupply_;
