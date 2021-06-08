@@ -12,6 +12,9 @@
 import "./SafeMath.sol";
 import "./ERC20I.sol";
 pragma solidity ^0.8.0;
+/* By having the token to implements inherite this contract 
+	so that we can transfer the ownership of the token 	
+*/
 contract Owner {
 	address public owner;
 	address public  newOwner;	
@@ -24,6 +27,11 @@ contract Owner {
 			require(owner == msg.sender);
 			_;
 	}
+	/*
+    @dev Allows the current owner to transfer control of the contract to a newOwner.
+    @param newOwner The address to transfer ownership to.
+  	
+	*/
 	function transferOwnership(address _newOwner) public onlyOnwer {
 			newOwner = _newOwner;
 	}
@@ -34,8 +42,7 @@ contract Owner {
 		newOwner = address(0);
 	}
 }
-
-contract SELToken is ERC20I{
+contract SELToken is ERC20I, Owner{
 	using SafeMath for uint256;
 
 	string public symbols;
@@ -99,6 +106,10 @@ contract SELToken is ERC20I{
 			balances[to] = balances[to].add(tokens);
 			emit Transfer(from, to, tokens);
 			return true;
+	}
+	// Owner can transfer out any  ERC20 tokens
+	function transferTokenImplERC20(address tokenAddress, uint tokens) public onlyOnwer returns(bool success) {
+		return ERC20I(tokenAddress).transfer(owner, tokens);
 	}
 }
 
