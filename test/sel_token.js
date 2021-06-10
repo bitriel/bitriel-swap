@@ -6,26 +6,32 @@ const SELToken = artifacts.require("SELToken");
  * See docs: https://www.trufflesuite.com/docs/truffle/testing/writing-tests-in-javascript
  */
 contract('SELToken', accounts => {
+	let token =null;
 	beforeEach(async () => {
-		this.token = await SELToken.new(100000);
+		token = await SELToken.new();
 	});
+	const [admin, _] = accounts;
+	const TOTAL_SUPPLY = web3.utils.toWei('1000000');
 	describe('token attributes', () => {
 		it('has the correct name', async () => {
-			const name = await this.token.name();
+			const name = await token.name();
 			assert(name === "SELToken");
 		});
 		it('has the correct symbols', async () => {
-			const symbols = await this.token.symbols();
-			assert(symbols === "SEL");
+			const symbols = await token.symbol();
+			assert(symbols.toString() === "SEL");
 		});
 
 		it('has the correct decimals', async () => {
-			const decimals = await this.token.decimals();
+			const decimals = await token.decimals();
 			assert(decimals.toNumber() === 18);
 		});
-		it('has the correct balance', async () => {
-			const total = await this.token.balanceOf(accounts[0]);
-			assert.equal(total, 100000000000000000000000, "Both number equal");
+		
+		it('admin should have total supply', async () => {	
+				const balanceAdmin = await token.balanceOf(admin);
+				const totalSupply = await token.totalSupply();
+				assert(balanceAdmin.toString() === TOTAL_SUPPLY);
+				assert(totalSupply.toString() === TOTAL_SUPPLY);
 		});
 	})
 })
