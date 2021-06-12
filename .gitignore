@@ -1,2 +1,4 @@
 node_modules/
 note.txt
+.secret
+build/
