@@ -1,4 +1,3 @@
 node_modules/
-note.md
-./.secret.json
 build/
+.secret.json
