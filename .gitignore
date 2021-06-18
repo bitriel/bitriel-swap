@@ -1,4 +1,4 @@
 node_modules/
-note.txt
-.secret
+note.md
+.secret.json
 build/
