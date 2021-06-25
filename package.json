@@ -1,0 +1,29 @@
+{
+  "name": "@bitrielswap/core",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "The core contracts for the BitrielSwap protocol",
+  "files": [
+    "contracts",
+    "build"
+  ],
+  "repository": "https://github.com/bitriel/bitriel-swap",
+  "keywords": [
+    "uniswap",
+    "bitrielswap",
+    "ethereum"
+  ],
+  "scripts": {
+    "compile": "truffle compile",
+    "test": "truffle test",
+    "dev": "truffle develop",
+    "deploy": "truffle migrate --reset",
+    "prepublishOnly": "yarn run compile && node scripts/prepublish.js"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.1.0",
+    "@openzeppelin/test-helpers": "^0.5.6",
+    "truffle-flattener": "^1.4.4",
+    "truffle-plugin-verify": "^0.5.9"
+  }
+}
