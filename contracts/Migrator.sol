@@ -1,7 +1,10 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity 0.6.12;
 
 import "./uniswapv2/interfaces/IUniswapV2Pair.sol";
 import "./uniswapv2/interfaces/IUniswapV2Factory.sol";
+
 
 contract Migrator {
     address public master;
@@ -11,19 +14,19 @@ contract Migrator {
     uint256 public desiredLiquidity = uint256(-1);
 
     constructor(
-        address _master,
+        address _chef,
         address _oldFactory,
         IUniswapV2Factory _factory,
         uint256 _notBeforeBlock
     ) public {
-        master = _master;
+        master = _chef;
         oldFactory = _oldFactory;
         factory = _factory;
         notBeforeBlock = _notBeforeBlock;
     }
 
     function migrate(IUniswapV2Pair orig) public returns (IUniswapV2Pair) {
-        require(msg.sender == master, "not from master ");
+        require(msg.sender == master, "not from master master");
         require(block.number >= notBeforeBlock, "too early to migrate");
         require(orig.factory() == oldFactory, "not from old factory");
         address token0 = orig.token0();

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -45,7 +47,7 @@ contract SelRoll {
         uint256 amountBMin,
         uint256 deadline
     ) public {
-        require(deadline >= block.timestamp, 'Bitriel-Swap: EXPIRED');
+        require(deadline >= block.timestamp, 'BitrielSwap: EXPIRED');
 
         // Remove liquidity from the old router with permit
         (uint256 amountA, uint256 amountB) = removeLiquidity(

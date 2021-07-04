@@ -1,9 +1,12 @@
-pragma solidity 0.6.12;
+// SPDX-License-Identifier: MIT
 
+pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// WARNING: There is a known vuln contained within this contract related to vote delegation, 
+// it's NOT recommmended to use this in production.  
 
 // SelToken with Governance.
 contract SelToken is ERC20("SELENDRA", "SEL"), Ownable {
@@ -184,7 +187,7 @@ contract SelToken is ERC20("SELENDRA", "SEL"), Ownable {
         internal
     {
         address currentDelegate = _delegates[delegator];
-        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying SEL (not scaled);
+        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying SELS (not scaled);
         _delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
