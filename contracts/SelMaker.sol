@@ -18,7 +18,6 @@ import "./Ownable.sol";
 contract SelMaker is Ownable {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
-
     // V1 - V5: OK
     IUniswapV2Factory public immutable factory;
     //0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac
